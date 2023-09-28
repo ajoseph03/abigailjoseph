@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connect Four</title>
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(7, 80px);
+            grid-template-rows: repeat(6, 80px);
+            gap: 5px;
+            margin: 20px auto;
+            width: 560px;
+        }
+        .cell {
+            width: 80px;
+            height: 80px;
+            background-color: lightblue;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .cell.red {
+            background-color: red;
+        }
+        .cell.yellow {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="board" id="board"></div>
+    <p id="winner"></p>
+
+    <script>
+        const board = document.getElementById('board');
+        const winnerText = document.getElementById('winner');
+        const numRows = 6;
+        const numCols = 7;
+        let currentPlayer = 'red';
+        let gameOver = false;
+        let boardArray = Array.from({ length: numRows }, () => Array(numCols).fill(null));
+
+        // Create the game board
+        for (let row = 0; row < numRows; row++) {
+            for (let col = 0; col < numCols; col++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.dataset.row = row;
+                cell.dataset.col = col;
+                cell.addEventListener('click', handleCellClick);
+                board.appendChild(cell);
+            }
+        }
+
+        function handleCellClick(event) {
+            if (gameOver) return;
+            const clickedCell = event.target;
+            const col = parseInt(clickedCell.dataset.col);
+            const emptyRow = findEmptyRow(col);
+
+            if (emptyRow !== -1) {
+                clickedCell.classList.add(currentPlayer);
+                boardArray[emptyRow][col] = currentPlayer;
+
+                if (checkWin(emptyRow, col)) {
+                    winnerText.textContent = `Player ${currentPlayer.toUpperCase()} wins!`;
+                    gameOver = true;
+                } else {
+                    currentPlayer = currentPlayer === 'red' ? 'yellow' : 'red';
+                    if (currentPlayer === 'yellow' && !gameOver) {
+                        setTimeout(computerMove, 1000); // Computer's move after 1 second
+                    }
+                }
+            }
+        }
+
+        function findEmptyRow(col) {
+            for (let row = numRows - 1; row >= 0; row--) {
+                if (!boardArray[row][col]) {
+                    return row;
+                }
+            }
+            return -1;
+        }
+
+        function checkWin(row, col) {
+            const directions = [
+                [1, 0],
+                [0, 1],
+                [1, 1],
+                [1, -1]
+            ];
+
+            for (const [dx, dy] of directions) {
+                let count = 1;
+                for (let i = 1; i < 4; i++) {
+                    const newRow = row + i * dx;
+                    const newCol = col + i * dy;
+                    if (
+                        newRow >= 0 && newRow < numRows &&
+                        newCol >= 0 && newCol < numCols &&
+                        boardArray[newRow][newCol] === currentPlayer
+                    ) {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+                for (let i = 1; i < 4; i++) {
+                    const newRow = row - i * dx;
+                    const newCol = col - i * dy;
+                    if (
+                        newRow >= 0 && newRow < numRows &&
+                        newCol >= 0 && newCol < numCols &&
+                        boardArray[newRow][newCol] === currentPlayer
+                    ) {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+                if (count >= 4) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function computerMove() {
+            if (gameOver) return;
+            let col;
+            do {
+                col = Math.floor(Math.random() * numCols);
+            } while (findEmptyRow(col) === -1);
+            const emptyRow = findEmptyRow(col);
+            const cells = document.querySelectorAll(`[data-row="${emptyRow}"][data-col="${col}"]`);
+            if (cells.length > 0) {
+                const cell = cells[0];
+                cell.click();
+            }
+        }
+    </script>
+</body>
+</html>
