@@ -1,4 +1,4 @@
-# Colab Notebook Summary
+# MNIST Colab Notebook Summary
 
 ## Introduction
 This notebook demonstrates loading, visualizing, and running a simple neural network model on the MNIST dataset using PyTorch and related libraries. The model aims to reach a target accuracy of 75% during its training process.
