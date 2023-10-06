@@ -87,7 +87,3 @@ print(i, acc)
 
 ## Observations
 This notebook provides a hands-on approach to understanding basic neural network operations using a popular dataset. The usage of `torch` and its functionalities is evident throughout the notebook.
-
----
-
-The Table of Contents provides direct links to each section, which can be useful for long README files or for readers who want to jump to a specific section directly.
