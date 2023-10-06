@@ -1,8 +1,4 @@
-Of course! Here's the README with the full Python code from the notebook:
-
----
-
-# Colab Notebook Summary
+# MNIST Colab Notebook Summary
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -133,8 +129,4 @@ for i in range(1000000):
 ```
 
 ## Observations
-This notebook provides a hands-on approach to understanding basic neural network operations using a popular dataset. The usage of `torch` and its functionalities is evident throughout the notebook.
-
---- 
-
-This README now provides a detailed overview of the notebook's contents alongside the full Python code.
+Problem set 1 provides a hands-on approach to understanding basic neural network operations using a popular dataset. The usage of `torch` and its functionalities is evident throughout the notebook.
